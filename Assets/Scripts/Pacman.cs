@@ -47,7 +47,8 @@ public class PacmanMovimiento : MonoBehaviour
     void LeerInput()
     {
         // Guardamos la dirección deseada, pero NO giramos aún
-        if (Input.GetKeyDown(KeyCode.UpArrow)) {
+        if (Input.GetKeyDown(KeyCode.UpArrow))
+        {
             direccionDeseada = Vector2.up;
         }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
@@ -67,7 +68,8 @@ public class PacmanMovimiento : MonoBehaviour
     // ---------------------------------------------------------
     // CAMBIO DE ORIENTACIÓN SPRITE
     // ---------------------------------------------------------
-    void RotarPacman() {
+    void RotarPacman()
+    {
 
         if (direccionDeseada == Vector2.up)
         {
