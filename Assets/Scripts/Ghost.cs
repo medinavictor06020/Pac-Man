@@ -8,6 +8,7 @@ public class Ghost : MonoBehaviour
     private Vector2 direccionActual;
     private Vector3 objetivo;
 
+
     void Start()
     {
         // Colocamos al fantasma en el centro de su celda inicial

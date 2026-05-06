@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class PacmanMovimiento : MonoBehaviour
 {
@@ -6,10 +7,10 @@ public class PacmanMovimiento : MonoBehaviour
     public Mapa mapa;
 
     // Dirección actual de movimiento
-    private Vector2 direccionActual = Vector2.right;
+    private Vector2 direccionActual = Vector2.zero;
 
     // Dirección que el jugador quiere tomar
-    private Vector2 direccionDeseada = Vector2.right;
+    private Vector2 direccionDeseada = Vector2.zero;
 
     // Margen para considerar que estamos en el centro de una celda
     public float margenCentro = 0.08f;
@@ -29,19 +30,61 @@ public class PacmanMovimiento : MonoBehaviour
     }
 
     // ---------------------------------------------------------
+    // DETECCIÓN COLLISION FANTASMA
+    // ---------------------------------------------------------
+    void OnCollisionEnter2D(Collision2D coll)
+    {
+        if (coll.gameObject.CompareTag("Ghost"))
+        {
+            Destroy(gameObject);
+            ScoreManager.Instance.scoreText.text = "Game Over";
+        }
+    }
+
+    // ---------------------------------------------------------
     // LECTURA DE INPUT
     // ---------------------------------------------------------
     void LeerInput()
     {
         // Guardamos la dirección deseada, pero NO giramos aún
-        if (Input.GetKeyDown(KeyCode.UpArrow))
+        if (Input.GetKeyDown(KeyCode.UpArrow)) {
             direccionDeseada = Vector2.up;
+        }
         else if (Input.GetKeyDown(KeyCode.DownArrow))
+        {
             direccionDeseada = Vector2.down;
+        }
         else if (Input.GetKeyDown(KeyCode.LeftArrow))
+        {
             direccionDeseada = Vector2.left;
+        }
         else if (Input.GetKeyDown(KeyCode.RightArrow))
+        {
             direccionDeseada = Vector2.right;
+        }
+    }
+
+    // ---------------------------------------------------------
+    // CAMBIO DE ORIENTACIÓN SPRITE
+    // ---------------------------------------------------------
+    void RotarPacman() {
+
+        if (direccionDeseada == Vector2.up)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 90);
+        }
+        else if (direccionDeseada == Vector2.down)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, -90);
+        }
+        else if (direccionDeseada == Vector2.left)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 180);
+        }
+        else if (direccionDeseada == Vector2.right)
+        {
+            transform.rotation = Quaternion.Euler(0, 0, 0);
+        }
     }
 
     // ---------------------------------------------------------
@@ -80,6 +123,7 @@ public class PacmanMovimiento : MonoBehaviour
         if (mismoEje)
         {
             direccionActual = direccionDeseada;
+            RotarPacman();
             return;
         }
 
@@ -93,6 +137,8 @@ public class PacmanMovimiento : MonoBehaviour
 
             // Ahora sí cambiamos de dirección
             direccionActual = direccionDeseada;
+
+            RotarPacman();
         }
     }
 
